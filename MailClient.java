@@ -10,6 +10,8 @@ public class MailClient
      */
     public MailClient (MailServer xServer,String xUser)
     {
+        server = xServer;
+        user = xUser;
     }
     
     /**
@@ -17,6 +19,7 @@ public class MailClient
      */
     public MailItem getNextMailItem ()
     {
+        return server.getNextMailItem(user);
     }
     
     /**
@@ -25,6 +28,13 @@ public class MailClient
      */
     public void printNextMailItem ()
     {
+        if (server.howManyMailItems(user) > 0) {
+            MailItem mail = server.getNextMailItem(user);
+            mail.print();
+        }
+        else {
+            System.out.println("No hay mensajes nuevos");
+        }
     }
     
     /**
@@ -32,6 +42,8 @@ public class MailClient
      */
     public void sendMailItem (String xTo,String xMessage)
     {
+        MailItem mail = new MailItem(user, xTo, xMessage);
+        server.post(mail);
     }
     
 }
