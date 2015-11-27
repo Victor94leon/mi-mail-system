@@ -40,9 +40,9 @@ public class MailClient
     /**
      * Crea un email basandose en los parametros introducidos y lo envía al servidor asociado a ese cliente.
      */
-    public void sendMailItem (String to,String message)
+    public void sendMailItem (String to,String subject,String message)
     {
-        MailItem mail = new MailItem(user, to, message);
+        MailItem mail = new MailItem(user, to, subject, message);
         server.post(mail);
     }
     
