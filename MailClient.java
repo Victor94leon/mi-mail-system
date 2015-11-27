@@ -4,6 +4,8 @@ public class MailClient
     private MailServer server;
     // Representa la dirección de correo del usuario que usa ese servidor
     private String user;
+    // Guarda la información del último mensaje recibido
+    private MailItem lastMail;
 
     /**
      * Construye un objeto de la clase MailClient inicializando sus atributos mediante parametros.
@@ -19,7 +21,11 @@ public class MailClient
      */
     public MailItem getNextMailItem ()
     {
-        return server.getNextMailItem(user);
+        MailItem mail = server.getNextMailItem(user);
+        if (mail != null) {
+            lastMail = mail;
+        }
+        return mail;
     }
 
     /**
@@ -31,6 +37,7 @@ public class MailClient
         if (server.howManyMailItems(user) > 0) {
             MailItem mail = server.getNextMailItem(user);
             mail.print();
+            lastMail = mail;
         }
         else {
             System.out.println("No hay mensajes nuevos");
@@ -69,10 +76,24 @@ public class MailClient
                 "Estoy fuera de la oficina \n" + mail.getMessage()
             );
             server.post(mail);
+            lastMail = mail;
         }
         else {
             System.out.println ("No hay mensajes nuevos para reenviar");
         }
     }
     
+    /**
+     * Muestra por pantalla las veces que queramos el último email enviado a la cuenta de usuario, 
+     * informando por pantalla en el caso de no tener ninguno
+     */
+    public void getLastMail ()
+    {
+        if (lastMail != null) {
+            lastMail.print();
+        }
+        else {
+            System.out.println ("No hay último mensaje");
+        }
+    }
 }
