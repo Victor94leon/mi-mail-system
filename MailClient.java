@@ -4,7 +4,7 @@ public class MailClient
     private MailServer server;
     // Representa la dirección de correo del usuario que usa ese servidor
     private String user;
-    
+
     /**
      * Construye un objeto de la clase MailClient inicializando sus atributos mediante parametros.
      */
@@ -13,7 +13,7 @@ public class MailClient
         this.server = server;
         this.user = user;
     }
-    
+
     /**
      * Recupera del servidor el siguiente correo que tenga el usuario y devuelve dicho objeto.
      */
@@ -21,7 +21,7 @@ public class MailClient
     {
         return server.getNextMailItem(user);
     }
-    
+
     /**
      * Recupera del servidor el siguiente correo que tenga el usuario e imprime por pantalla datos
      * de dicho mensaje. Si no hay ningun mensaje muestra una mensaje informando de ello.
@@ -36,7 +36,7 @@ public class MailClient
             System.out.println("No hay mensajes nuevos");
         }
     }
-    
+
     /**
      * Crea un email basandose en los parametros introducidos y lo envía al servidor asociado a ese cliente.
      */
@@ -45,7 +45,7 @@ public class MailClient
         MailItem mail = new MailItem(user, to, subject, message);
         server.post(mail);
     }
-    
+
     /**
      * Muestra por pantalla cuantos emails tiene el usuario en el servidor
      */
@@ -53,4 +53,26 @@ public class MailClient
     {
         System.out.println("Hay " + server.howManyMailItems(user) + " mensajes disponibles");
     }
+
+    /**
+     * Obtiene del servidor el siguiente mensaje del usuario y responde automáticamente al emisor de este
+     */
+    public void getNextMailItemAndSendAutomaticRespond ()
+    {
+        MailItem mail = server.getNextMailItem(user);
+        if (mail != null)
+        {
+            sendMailItem
+            (
+                mail.getFrom(), 
+                "RE: " + mail.getSubject(),
+                "Estoy fuera de la oficina \n" + mail.getMessage()
+            );
+            server.post(mail);
+        }
+        else {
+            System.out.println ("No hay mensajes nuevos para reenviar");
+        }
+    }
+    
 }
