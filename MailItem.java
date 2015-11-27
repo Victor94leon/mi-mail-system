@@ -45,6 +45,7 @@ public class MailItem
     {
         return subject;
     }
+    
     /**
      * Devuelve el string introducido 
      */

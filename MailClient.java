@@ -46,4 +46,11 @@ public class MailClient
         server.post(mail);
     }
     
+    /**
+     * Muestra por pantalla cuantos emails tiene el usuario en el servidor
+     */
+    public void howManyMailItems()
+    {
+        System.out.println("Hay " + server.howManyMailItems(user) + " mensajes disponibles");
+    }
 }
