@@ -2,16 +2,16 @@ public class MailClient
 {
     // Representa el servidor asociado con el cliente
     private MailServer server;
-    // Representa la dirección de correo del usuario que usa ese cliente
+    // Representa la dirección de correo del usuario que usa ese servidor
     private String user;
     
     /**
      * Construye un objeto de la clase MailClient inicializando sus atributos mediante parametros.
      */
-    public MailClient (MailServer xServer,String xUser)
+    public MailClient (MailServer server,String user)
     {
-        server = xServer;
-        user = xUser;
+        this.server = server;
+        this.user = user;
     }
     
     /**
@@ -40,9 +40,9 @@ public class MailClient
     /**
      * Crea un email basandose en los parametros introducidos y lo envía al servidor asociado a ese cliente.
      */
-    public void sendMailItem (String xTo,String xMessage)
+    public void sendMailItem (String to,String message)
     {
-        MailItem mail = new MailItem(user, xTo, xMessage);
+        MailItem mail = new MailItem(user, to, message);
         server.post(mail);
     }
     

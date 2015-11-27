@@ -11,11 +11,11 @@ public class MailItem
      * Crea un objeto de la clase MailItem introduciendo tres parametros para guardar la información sobre
      * quien envia el mensaje, quien lo recibe y el contenido del mismo.
      */
-    public MailItem (String xFrom,String xTo,String xMessage)
+    public MailItem (String from,String to,String message)
     {
-        from = xFrom;
-        to = xTo;
-        message = xMessage;
+        this.from = from;
+        this.to = to;
+        this.message = message;
     }
     
     /**
