@@ -14,6 +14,7 @@ public class MailClient
     {
         this.server = server;
         this.user = user;
+        lastMail = null;
     }
 
     /**
@@ -34,13 +35,12 @@ public class MailClient
      */
     public void printNextMailItem ()
     {
-        if (server.howManyMailItems(user) > 0) {
-            MailItem mail = server.getNextMailItem(user);
+        MailItem mail = getNextMailItem();
+        if (mail != null) {
             mail.print();
-            lastMail = mail;
         }
         else {
-            System.out.println("No hay mensajes nuevos");
+            System.out.println("No hay mensajes nuevos");    
         }
     }
 
@@ -66,7 +66,7 @@ public class MailClient
      */
     public void getNextMailItemAndSendAutomaticRespond ()
     {
-        MailItem mail = server.getNextMailItem(user);
+        MailItem mail = getNextMailItem();
         if (mail != null)
         {
             sendMailItem
@@ -75,11 +75,7 @@ public class MailClient
                 "RE: " + mail.getSubject(),
                 "Estoy fuera de la oficina \n" + mail.getMessage()
             );
-            server.post(mail);
             lastMail = mail;
-        }
-        else {
-            System.out.println ("No hay mensajes nuevos para reenviar");
         }
     }
     
