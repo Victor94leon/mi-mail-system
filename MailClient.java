@@ -18,6 +18,9 @@ public class MailClient
     private String longMailUsuario;
     // guarda el porcentaje del spam recibido
     private float porcentaje;
+    // Guarda información del último spam recibido
+    private MailItem lastSpam;
+    
     /**
      * Construye un objeto de la clase MailClient inicializando sus atributos mediante parametros.
      */
@@ -44,6 +47,7 @@ public class MailClient
             else if (mensaje.contains("regalo") || mensaje.contains("promocion")) {
                 spam = spam + 1;
                 mail = null;
+                lastSpam = mail;
             }
             if (mail != null) {
                 lastMail = mail;
@@ -146,5 +150,13 @@ public class MailClient
         System.out.println("Porcentaje de spam: " + porcentaje + "%");
         System.out.println("Nº de caracteres del mail más largo recibido: " + longMailCaracteres);
         System.out.println("Persona que te envio el mail más largo: " + longMailUsuario);
+    }
+    
+    /**
+     * Método para mostar el últim spam por pantalla
+     */
+    public void showInfoLastSpam()
+    {
+        lastSpam.print();
     }
 }
