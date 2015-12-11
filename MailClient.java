@@ -6,9 +6,18 @@ public class MailClient
     private String user;
     // Guarda la información del último mensaje recibido
     private MailItem lastMail;
-    // Guarda spam recibido
+    // Guarda el número de spam recibido
     private int spam;
-
+    // Guarda el nº de mensajes enviados
+    private int mensajesEnviados;
+    // Guarda el nº de mensajes recibidos
+    private int mensajesRecibidos;
+    // Guarda el nº de caracteres del mail mas largo
+    private int longMailCaracteres;
+    // guarda información sobre lapersona que envia el mail más largo
+    private String longMailUsuario;
+    // guarda el porcentaje del spam recibido
+    private float porcentaje;
     /**
      * Construye un objeto de la clase MailClient inicializando sus atributos mediante parametros.
      */
@@ -18,6 +27,8 @@ public class MailClient
         this.user = user;
         lastMail = null;
         spam = 0;
+        mensajesEnviados = 0;
+        mensajesRecibidos = 0;
     }
 
     /**
@@ -37,7 +48,13 @@ public class MailClient
             if (mail != null) {
                 lastMail = mail;
             }
+            int caracteres = mensaje.length();
+            if (caracteres > longMailCaracteres) {
+                longMailCaracteres = caracteres;
+                longMailUsuario = mail.getFrom();
+            } 
         }
+        mensajesRecibidos = mensajesRecibidos + 1;
         return mail;
     }
 
@@ -48,13 +65,13 @@ public class MailClient
     public void printNextMailItem ()
     {
         MailItem mail = getNextMailItem();
-        if (mail != null) {
+        if (mail != null) {     
             mail.print();
-            String mensaje = mail.getMessage();
         }
         else {   
             if (spam > 0) {
                 System.out.println("Se ha recibido spam");
+                mensajesRecibidos = mensajesRecibidos + 1;
             }
             else {
                 System.out.println("No hay mensajes nuevos"); 
@@ -68,6 +85,7 @@ public class MailClient
     public void sendMailItem (String to,String subject,String message)
     {
         MailItem mail = new MailItem(user, to, subject, message);
+        mensajesEnviados = mensajesEnviados + 1;
         server.post(mail);
     }
 
@@ -109,5 +127,24 @@ public class MailClient
         else {
             System.out.println ("No hay último mensaje");
         }
+    }
+
+    /**
+     * Muestra las estadisticas de los mensajes relacionados con el usuario
+     */
+    public void showStats()
+    {
+        if (mensajesRecibidos == 0) {
+            porcentaje = 0f;
+        }
+        else {
+            porcentaje = spam / mensajesRecibidos;
+        }
+        System.out.println("Mensajes enviados: " + mensajesEnviados);
+        System.out.println("Mensajes recibidos: " + mensajesRecibidos);
+        System.out.println("Spam recibido: " + spam);
+        System.out.println("Porcentaje de spam: " + porcentaje + "%");
+        System.out.println("Nº de caracteres del mail más largo recibido: " + longMailCaracteres);
+        System.out.println("Persona que te envio el mail más largo: " + longMailUsuario);
     }
 }
