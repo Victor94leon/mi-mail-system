@@ -10,6 +10,7 @@ public class MailItem
     private String message;
     
     
+    
     /**
      * Crea un objeto de la clase MailItem introduciendo tres parametros para guardar la información sobre
      * quien envia el mensaje, quien lo recibe y el contenido del mismo.

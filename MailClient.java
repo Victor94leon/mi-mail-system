@@ -6,6 +6,8 @@ public class MailClient
     private String user;
     // Guarda la información del último mensaje recibido
     private MailItem lastMail;
+    // Guarda spam recibido
+    private int spam;
 
     /**
      * Construye un objeto de la clase MailClient inicializando sus atributos mediante parametros.
@@ -15,6 +17,7 @@ public class MailClient
         this.server = server;
         this.user = user;
         lastMail = null;
+        spam = 0;
     }
 
     /**
@@ -24,7 +27,16 @@ public class MailClient
     {
         MailItem mail = server.getNextMailItem(user);
         if (mail != null) {
-            lastMail = mail;
+            String mensaje = mail.getMessage();
+            if (mensaje.contains("trabajo")) {
+            }
+            else if (mensaje.contains("regalo") || mensaje.contains("promocion")) {
+                spam = spam + 1;
+                mail = null;
+            }
+            if (mail != null) {
+                lastMail = mail;
+            }
         }
         return mail;
     }
@@ -38,9 +50,15 @@ public class MailClient
         MailItem mail = getNextMailItem();
         if (mail != null) {
             mail.print();
+            String mensaje = mail.getMessage();
         }
-        else {
-            System.out.println("No hay mensajes nuevos");    
+        else {   
+            if (spam > 0) {
+                System.out.println("Se ha recibido spam");
+            }
+            else {
+                System.out.println("No hay mensajes nuevos"); 
+            }
         }
     }
 
@@ -78,7 +96,7 @@ public class MailClient
             lastMail = mail;
         }
     }
-    
+
     /**
      * Muestra por pantalla las veces que queramos el último email enviado a la cuenta de usuario, 
      * informando por pantalla en el caso de no tener ninguno
